@@ -52,7 +52,7 @@ def evaluate_interview(answers):
 Question {i}:
 {item['question']}
 
-Answer {i}:
+Candidate Answer {i}:
 {item['answer']}
 
 """
@@ -60,13 +60,39 @@ Answer {i}:
     prompt = f"""
 You are an expert technical interviewer.
 
-Evaluate the following interview.
+Evaluate the candidate's answers fairly and accurately.
 
 {interview_text}
 
-Return your response EXACTLY in this format.
+IMPORTANT SCORING RULES:
+
+- There are exactly {len(answers)} questions.
+- Evaluate EVERY answer individually.
+- Do NOT give a very low score just because an answer is short.
+- If the answer is relevant and mostly correct, give good marks.
+- Give low marks only if the answer is irrelevant, incorrect, empty, or says "I don't know".
+- Consider technical correctness, relevance, clarity, and completeness.
+
+Score each question using this scale:
+0 = No answer or completely incorrect
+1 = Very poor
+2 = Partially correct
+3 = Good and mostly correct
+4 = Very good
+5 = Excellent and technically correct
+
+Calculate the final score out of 100 based on all questions.
+
+Return EXACTLY in this format:
 
 Overall Score: <score>/100
+
+Question-wise Evaluation:
+1. Score: <score>/5 - <short feedback>
+2. Score: <score>/5 - <short feedback>
+3. Score: <score>/5 - <short feedback>
+4. Score: <score>/5 - <short feedback>
+5. Score: <score>/5 - <short feedback>
 
 Strengths:
 - Point 1
@@ -87,26 +113,25 @@ Suggestions:
     try:
 
         response = client.chat.completions.create(
-
             model=MODEL_NAME,
-
             messages=[
+                {
+                    "role": "system",
+                    "content": "You are a fair and consistent technical interview evaluator. Follow the scoring rules exactly."
+                },
                 {
                     "role": "user",
                     "content": prompt
                 }
             ],
-
-            temperature=0.5
-
+            temperature=0.1
         )
-        print(response.choices[0].message.content)
-        return response.choices[0].message.content
+
+        return response.choices[0].message.content.strip()
 
     except Exception as e:
-
         return f"Evaluation Error: {str(e)}"
-        
+
 def analyze_resume(resume_text):
 
     prompt = f"""
@@ -124,14 +149,23 @@ Resume:
 {resume_text}
 """
 
-    response = client.chat.completions.create(
-        model=MODEL_NAME,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    )
+    try:
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an expert ATS resume reviewer."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.2
+        )
 
-    return response.choices[0].message.content
+        return response.choices[0].message.content.strip()
+
+    except Exception as e:
+        return f"Resume Analysis Error: {str(e)}"    
