@@ -4,6 +4,10 @@ An AI-powered web application designed to help students and job seekers prepare 
 
 The platform provides category-based mock interviews, AI-generated questions, answer evaluation, resume analysis, interview history, and certificate generation.
 
+## 🌐 Live Demo
+
+🔗 [View Live Project](https://ai-interview-preparation-platform-m9a5.onrender.com)
+
 ## Features
 
 - AI-generated interview questions
