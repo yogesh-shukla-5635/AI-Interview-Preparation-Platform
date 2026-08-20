@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <div class="navbar">
+
+        <div class="logo">
+            AI Interview Platform
+        </div>
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+
+    <!-- Main Container -->
+
+    <div class="container">
+
+        <div class="heading">
+
+            <h1>Welcome, {{ username }} 👋</h1>
+
+            <p>
+                Prepare for AI Powered Interviews & Analyze your Resume
+            </p>
+
+        </div>
+<div class="row mb-5">
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Total Interviews</h5>
+                <h2>{{ stats.total }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Best Score</h5>
+                <h2>{{ stats.best }}/100</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5>Average Score</h5>
+                <h2>{{ stats.average }}/100</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- Cards -->
+
+        <div class="card-container">
+
+            <div class="card">
+
+                <h1>🎤</h1>
+
+                <h3>AI Interview</h3>
+
+                <p>
+                    Practice AI based mock interviews.
+                </p>
+
+                <a href="/interview">
+                    Start
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <h1>📄</h1>
+
+                <h3>Resume Analyzer</h3>
+
+                <p>
+                    Upload your resume and get AI feedback.
+                </p>
+
+                <a href="/resume">
+                    Analyze
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <h1>📜</h1>
+
+                <h3>Interview History</h3>
+
+                <p>
+                    View previous interview attempts.
+                </p>
+
+                <a href="/history">
+                    View
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <h1>👤</h1>
+
+                <h3>Profile</h3>
+
+                <p>
+                    Manage your account information.
+                </p>
+
+                <a href="/profile">
+                    Open
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        © 2026 AI Interview Preparation Platform
+
+    </div>
+
+</body>
+
+</html>

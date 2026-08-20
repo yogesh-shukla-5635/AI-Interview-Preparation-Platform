@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis Result</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center mb-0">
+                📄 AI Resume Analysis Report
+            </h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-success">
+                <h5>✅ Analysis Completed Successfully</h5>
+                Your resume has been analyzed by AI.
+            </div>
+
+            <div
+                class="border rounded p-4"
+                style="white-space: pre-wrap;">
+
+                {{ report }}
+
+            </div>
+
+            <div class="text-center mt-4">
+
+                <a
+                    href="/resume"
+                    class="btn btn-success">
+                    Analyze Another Resume
+                </a>
+
+                <a
+                    href="/dashboard"
+                    class="btn btn-secondary">
+                    Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

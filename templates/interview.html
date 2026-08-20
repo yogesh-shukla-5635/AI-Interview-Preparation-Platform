@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    {% if questions == None %}
+
+    <!-- Category Selection -->
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-center mb-4">
+            AI Mock Interview
+        </h2>
+
+        <form action="/start_interview" method="POST">
+
+            <label class="form-label">
+                Select Interview Category
+            </label>
+
+            <select
+                    name="category"
+                    class="form-select"
+                    required>
+
+                <option value="">Choose Category</option>
+
+                <option>Python</option>
+
+                <option>SQL</option>
+
+                <option>Machine Learning</option>
+
+                <option>Artificial Intelligence</option>
+
+                <option>HR</option>
+
+            </select>
+
+            <br>
+
+            <button
+                    class="btn btn-primary w-100">
+
+                Start Interview
+
+            </button>
+
+        </form>
+
+    </div>
+
+    {% else %}
+
+    <!-- Interview Screen -->
+
+    <div class="card shadow p-4">
+
+        <h4>
+            Question {{ question_no }} of {{ total }}
+        </h4>
+
+       <div class="progress mb-4" style="height:20px;">
+    <div class="progress-bar"
+         role="progressbar"
+         style="width: {{ progress }}%;">
+    </div>
+</div>
+        <h5 class="mb-4">
+
+            {{ question }}
+
+        </h5>
+
+        <form action="/next_question" method="POST">
+
+            <textarea
+                    class="form-control"
+                    rows="7"
+                    name="answer"
+                    placeholder="Type your answer..."
+                    required></textarea>
+
+            <br>
+
+            <button
+                    class="btn btn-success">
+
+                Next Question
+
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

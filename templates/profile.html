@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg">
+
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">👤 My Profile</h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 text-center">
+
+                    <img src="https://ui-avatars.com/api/?name={{ username }}&background=0D6EFD&color=fff&size=180"
+                         class="rounded-circle mb-3">
+
+                    <h3>{{ username }}</h3>
+
+                    <span class="badge bg-success">
+                        Active User
+                    </span>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <table class="table">
+
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ username }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Platform</th>
+                            <td>AI Interview Preparation</td>
+                        </tr>
+
+                        <tr>
+                            <th>Account Status</th>
+                            <td>
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Features</th>
+                            <td>
+                                AI Interview • Resume Analyzer • History
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <a href="/history" class="btn btn-primary">
+                        📜 Interview History
+                    </a>
+
+                    <a href="/dashboard" class="btn btn-secondary">
+                        🏠 Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
