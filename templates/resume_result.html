@@ -1,54 +1,223 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Resume Analysis Result</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Markdown ko HTML mein convert karne ke liye -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        body {
+            background: #f4f7fb;
+        }
+
+        .result-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, #0d6efd, #6610f2);
+            padding: 28px;
+        }
+
+        .analysis-box {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+            line-height: 1.7;
+        }
+
+        /* Headings */
+
+        .analysis-box h1,
+        .analysis-box h2,
+        .analysis-box h3 {
+            margin-top: 30px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .analysis-box h1 {
+            color: #0d6efd;
+        }
+
+        .analysis-box h2 {
+            color: #198754;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .analysis-box h3 {
+            color: #212529;
+        }
+
+        /* Tables */
+
+        .analysis-box table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .analysis-box th {
+            background: #0d6efd;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .analysis-box td {
+            padding: 14px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .analysis-box tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Horizontal Line */
+
+        .analysis-box hr {
+            margin: 30px 0;
+            border: 0;
+            border-top: 2px solid #dee2e6;
+        }
+
+        /* Bold Text */
+
+        .analysis-box strong {
+            color: #212529;
+        }
+
+        /* Lists */
+
+        .analysis-box ul,
+        .analysis-box ol {
+            padding-left: 25px;
+        }
+
+        .analysis-box li {
+            margin-bottom: 8px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 768px) {
+
+            .analysis-box {
+                padding: 18px;
+                font-size: 14px;
+            }
+
+            .analysis-box table {
+                font-size: 13px;
+            }
+
+            .analysis-box th,
+            .analysis-box td {
+                padding: 9px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body class="bg-light">
 
-<div class="container mt-5">
+<body>
 
-    <div class="card shadow-lg">
+<div class="container mt-5 mb-5">
 
-        <div class="card-header bg-primary text-white">
-            <h2 class="text-center mb-0">
+    <div class="card shadow-lg result-card">
+
+        <!-- Header -->
+
+        <div class="result-header text-white">
+
+            <h2 class="text-center mb-2">
+
                 📄 AI Resume Analysis Report
+
             </h2>
+
+            <p class="text-center mb-0 opacity-75">
+
+                AI-powered ATS evaluation and improvement suggestions
+
+            </p>
+
         </div>
 
-        <div class="card-body">
 
-            <div class="alert alert-success">
-                <h5>✅ Analysis Completed Successfully</h5>
-                Your resume has been analyzed by AI.
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Success Message -->
+
+            <div class="alert alert-success border-0 shadow-sm">
+
+                <h5 class="mb-1">
+
+                    ✅ Analysis Completed Successfully
+
+                </h5>
+
+                <p class="mb-0">
+
+                    Your resume has been analyzed by AI. Check your detailed
+                    ATS score, strengths, weaknesses, and missing skills below.
+
+                </p>
+
             </div>
 
-            <div
-                class="border rounded p-4"
-                style="white-space: pre-wrap;">
 
-                {{ report }}
+            <!-- AI Report -->
+
+            <div class="analysis-box">
+
+                <div id="report-content"></div>
 
             </div>
 
-            <div class="text-center mt-4">
 
-                <a
-                    href="/resume"
-                    class="btn btn-success">
-                    Analyze Another Resume
+            <!-- Buttons -->
+
+            <div class="text-center mt-5">
+
+                <a href="/resume"
+                   class="btn btn-success px-4 me-2">
+
+                    🔄 Analyze Another Resume
+
                 </a>
 
-                <a
-                    href="/dashboard"
-                    class="btn btn-secondary">
-                    Dashboard
+
+                <a href="/dashboard"
+                   class="btn btn-secondary px-4">
+
+                    ← Dashboard
+
                 </a>
 
             </div>
@@ -59,7 +228,26 @@
 
 </div>
 
+
+<!-- AI Report Data -->
+<script id="report-data" type="text/plain">{{ report }}</script>
+
+
+<!-- Markdown Convert -->
+
+<script>
+
+    const report = document.getElementById("report-data").textContent;
+
+    document.getElementById("report-content").innerHTML =
+        marked.parse(report);
+
+</script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
+```

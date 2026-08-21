@@ -1,10 +1,11 @@
 from groq import Groq
 from config import Config
+import re
 
 client = Groq(api_key=Config.GROQ_API_KEY)
 
-
 MODEL_NAME = "openai/gpt-oss-20b"
+
 
 def generate_questions(category):
 
@@ -42,6 +43,8 @@ Rules:
                 questions.append(line[2:].strip())
 
     return questions
+
+
 def evaluate_interview(answers):
 
     interview_text = ""
@@ -54,7 +57,6 @@ Question {i}:
 
 Candidate Answer {i}:
 {item['answer']}
-
 """
 
     prompt = f"""
@@ -74,6 +76,7 @@ IMPORTANT SCORING RULES:
 - Consider technical correctness, relevance, clarity, and completeness.
 
 Score each question using this scale:
+
 0 = No answer or completely incorrect
 1 = Very poor
 2 = Partially correct
@@ -117,7 +120,10 @@ Suggestions:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a fair and consistent technical interview evaluator. Follow the scoring rules exactly."
+                    "content": (
+                        "You are a fair and consistent technical interview "
+                        "evaluator. Follow the scoring rules exactly."
+                    )
                 },
                 {
                     "role": "user",
@@ -132,40 +138,128 @@ Suggestions:
     except Exception as e:
         return f"Evaluation Error: {str(e)}"
 
+
 def analyze_resume(resume_text):
 
     prompt = f"""
-You are an expert ATS Resume Reviewer.
+You are an expert ATS Resume Reviewer and AI/ML career advisor.
 
-Analyze this resume and provide:
+Analyze the following resume carefully and generate a professional ATS evaluation.
 
-1. ATS Score (out of 100)
-2. Strengths
-3. Weaknesses
-4. Missing Skills
-5. Improvement Suggestions
-
-Resume:
+RESUME:
 {resume_text}
+
+STRICT OUTPUT FORMAT RULES:
+
+1. Return ONLY valid Markdown.
+2. Do NOT return HTML.
+3. Do NOT use code fences.
+4. Do NOT add introductory text before the report.
+5. Every table must use valid Markdown syntax.
+6. Every table row must contain the same number of columns as its header.
+7. Always separate columns using the | symbol.
+8. Never merge column names together.
+9. Keep the analysis clear, concise, and professional.
+10. Give realistic scores based only on the actual resume content.
+
+Use EXACTLY this structure:
+
+# ATS Score: X/100
+
+## Score Breakdown
+
+| Category | Score | Rationale |
+|---|---:|---|
+| Keyword Match | X/100 | Brief explanation |
+| Formatting & Readability | X/100 | Brief explanation |
+| Section Structure | X/100 | Brief explanation |
+| Content Depth | X/100 | Brief explanation |
+| Overall | X/100 | Brief explanation |
+
+---
+
+## 1. Strengths
+
+| Strength | Why It Matters |
+|---|---|
+| Strength 1 | Brief explanation |
+| Strength 2 | Brief explanation |
+| Strength 3 | Brief explanation |
+| Strength 4 | Brief explanation |
+| Strength 5 | Brief explanation |
+
+---
+
+## 2. Weaknesses
+
+| Issue | Why It Hurts ATS or Hiring |
+|---|---|
+| Issue 1 | Brief explanation |
+| Issue 2 | Brief explanation |
+| Issue 3 | Brief explanation |
+| Issue 4 | Brief explanation |
+| Issue 5 | Brief explanation |
+
+---
+
+## 3. Missing Skills
+
+| Category | Recommended Skills |
+|---|---|
+| ML/DL Frameworks | Relevant missing skills |
+| NLP & LLMs | Relevant missing skills |
+| Data Handling | Relevant missing skills |
+| Model Deployment | Relevant missing skills |
+| Version Control & DevOps | Relevant missing skills |
+| Cloud & Infrastructure | Relevant missing skills |
+
+---
+
+## 4. Improvement Suggestions
+
+1. Specific improvement suggestion based on the resume.
+2. Specific improvement suggestion based on the resume.
+3. Specific improvement suggestion based on the resume.
+4. Specific improvement suggestion based on the resume.
+5. Specific improvement suggestion based on the resume.
+
+FINAL CHECK BEFORE RESPONDING:
+
+- Do not use code fences.
+- Do not generate HTML.
+- Do not merge table headers.
+- Ensure all tables have correctly separated columns.
+- Ensure every row has the same number of columns.
+- Use only information supported by the resume.
+- Return the report only.
 """
 
     try:
+
         response = client.chat.completions.create(
             model=MODEL_NAME,
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert ATS resume reviewer."
+                    "content": (
+                        "You are a precise ATS resume reviewer. "
+                        "Follow the requested Markdown structure exactly. "
+                        "Validate all Markdown tables before responding."
+                    )
                 },
                 {
                     "role": "user",
                     "content": prompt
                 }
             ],
-            temperature=0.2
+            temperature=0.1
         )
 
         return response.choices[0].message.content.strip()
+        
+        result = re.sub(r'^```[a-zA-Z]*\s*', '', result)
+        result = re.sub(r'\s*```$', '', result)
+        return result.strip() 
 
     except Exception as e:
-        return f"Resume Analysis Error: {str(e)}"    
+        return f"Resume Analysis Error: {str(e)}"
